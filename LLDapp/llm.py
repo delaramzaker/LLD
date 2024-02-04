@@ -30,7 +30,7 @@ def process_uploaded_file(file):
         chunk_overlap = 150
     )
     splits = text_splitter.split_documents(docs)
-    persist_directory = '/Users/delaram/MyLLM/chromadb-storage'
+    persist_directory = 'chromadb-storage'
     # !rm -rf ./docs/chroma  # remove old database files if any 
 
     embedding = OpenAIEmbeddings()
@@ -79,7 +79,7 @@ def answer_question(question):
         llm_name = "gpt-3.5-turbo"
 
     
-    persist_directory = '/Users/delaram/MyLLM/chromadb-storage'
+    persist_directory = 'chromadb-storage'
     embedding = OpenAIEmbeddings()
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
     
