@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Combined Form</title>
+</head>
+<body>
+
+  <h2>Combined Form</h2>
+  <form method="post" enctype="multipart/form-data" action="{% url 'combined_view' %}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>
