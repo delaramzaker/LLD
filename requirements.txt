@@ -29,6 +29,7 @@ openai==1.11.1
 packaging==23.2
 pydantic==2.6.0
 pydantic_core==2.16.1
+pypdf==4.0.1
 python-dotenv==1.0.1
 PyYAML==6.0.1
 requests==2.31.0
