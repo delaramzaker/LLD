@@ -1,1 +1,1 @@
-web: gunicorn LLDapp.wsgi
+web: gunicorn LLD.wsgi
