@@ -7,6 +7,5 @@ class QuestionForm(forms.Form):
 
 
 class CombinedForm(forms.Form):
-    file = forms.FileField(label='Upload File')
-    question = forms.CharField(label='Your Question', max_length=255)
-
+    file = forms.FileField(label='Upload File', widget=forms.FileInput(attrs={'class': 'button'}))
+    question = forms.CharField(label='Your Question', max_length=255, widget=forms.TextInput(attrs={'class': 'text_field'}))

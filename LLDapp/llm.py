@@ -2,7 +2,6 @@ import os
 import openai
 import sys
 from langchain.llms import OpenAI
-from langchain.document_loaders import PyPDFLoader
 from dotenv import load_dotenv, find_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.retrievers import ContextualCompressionRetriever
@@ -41,18 +40,7 @@ def process_uploaded_file(file):
         persist_directory=persist_directory
     ) 
 
-    def pretty_print_docs(docs):
-        print(f"\n{'-' * 100}\n".join([f"Document {i+1}:\n\n" + d.page_content for i, d in enumerate(docs)]))
-    # Wrap our vectorstore
-    llm = OpenAI(temperature=0)
-    compressor = LLMChainExtractor.from_llm(llm) 
-    compression_retriever = ContextualCompressionRetriever(
-        base_compressor=compressor,
-        base_retriever=vectordb.as_retriever(search_type = "mmr")
-    ) 
-    question = "wat zijn de benodigdheden?"
-    compressed_docs = compression_retriever.get_relevant_documents(question)
-    pretty_print_docs(compressed_docs)
+  
 
 def answer_question(question):
 
