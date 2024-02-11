@@ -2,104 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ABOUT</title>
+    <title>Upload</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
 	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
-	
-    <link rel="stylesheet" href="styleNav.css">
     <style>
-    body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: #fcd7d7;
-    }
-    
-    
-    h1 {
-        font-size: 80px;
-    }
-    
-    /* stukje tekst */
-    article {
-        flex-grow: 1;
-        text-align: center;
-        color: white;
-        font-family:"Single Day";
-    }
-    
-    /* nav menu */
-    li {
-      float: left;
-      font-family: "Single Day";
-    }
-    
-    li a {
-      display: block;
+
+      .text_field {
+        background-color: #f3b1ce;
+        height: 40px;
+        width: 50%;
+        margin-bottom:30px ; 
+        margin-top:30px ; 
+      }
+
+      .button {
+      background-color: #f3b1ce;
       color: white;
-      text-align: center;
-      padding: 14px 16px;
+      font-family: "Single Day";
+      font-size: 24px;
       text-decoration: none;
+      border: none;
+      display: inline-block;
+      border-radius: 15px;
+      cursor: pointer;
+      padding: 14px 24px;
     }
-    
-    li a:hover {
-      background-color: #ecbad0;
-    }
-    
-    ul {
-      background-color: #fcd7d7;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-size: 20px;
-    }
-    /* end nav menu */
-    .active {
-  background-color: #f3b1ce;}
-    
-    /* footer */
-    
-    /* streepje */
-    hr.dash {border-top: 2px dashed white;
-    }
-    
-    footer {
-        margin-top: auto;
-        font-family:"Single Day";
-        font-size: 14px;
+      body {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background-color: #fcd7d7;
+      }
+      
+      .active {
+      background-color: #f3b1ce;}
+      h1 {
+          font-size: 80px;
+      }
+      
+      /* stukje tekst */
+      article {
+          flex-grow: 1;
+          text-align: center;
+          color: white;
+          font-family:"Single Day";
+      }
+      
+      /* nav menu */
+      li {
+        float: left;
+        font-family: "Single Day";
+      }
+      
+      li a {
+        display: block;
+        color: white;
         text-align: center;
-        color: #c78ca0;
-    }
-        
-    /* end footer */
-    </style>
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover {
+        background-color: #ecbad0;
+      }
+      
+      ul {
+        background-color: #fcd7d7;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-size: 20px;
+      }
+      /* end nav menu */
+      
+      
+      /* footer */
+      
+      /* streepje */
+      hr.dash {border-top: 2px dashed white;
+      }
+      
+      footer {
+          margin-top: auto;
+          font-family:"Single Day";
+          font-size: 14px;
+          text-align: center;
+          color: #c78ca0;
+      }
+          
+      /* end footer */
+      </style>
+
 </head>
 <body>
-	<header>
+  <header>
 		<nav>
 			<ul>
 			  <li><a href="/PWS/">Home</a></li>
-			  <li><a href="/news/">News</a></li>
+			  <li><a href='/news/'>News</a></li>
 			  <li><a href="/contact/">Contact</a></li>
-			  <li><a class="active" href="/about/">About</a></li>
-              <li style="float:right"><a class="active" href="/combined/">LLD</a></li>
+			  <li><a href="/about/">Upload</a></li>
+        <li style="float:right"><a class="active" href="/combined/">LLD</a></li>
+			
 			</ul>
 		</nav>
 	</header>
-	
 <article id="article">
-	<h1> ABOUT </h1>
-	<p>Currently our project only works with PDF's and not Documents.</p>
-    <p>We are doing our best to improve our website !!</p>
-    <p>2023-2024 February</p>
+  <h1>Question answering AI !!</h1>
+  <form method="post" enctype="multipart/form-data" action="{% url 'combined_view' %}">
+   
+    {{ form }}
+    <input type="button" value="Upload" class="button" />
+  </form>
+  <div id="result"></div>
 </article>
 
-<footer id="footer">
-	<hr class="dash">
-		&copy; 2024-2025 LLD Inc.
-</footer>
+
 </body>
 </html>

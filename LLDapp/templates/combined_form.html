@@ -112,15 +112,22 @@
 	</header>
 <article id="article">
   <h1>Question answering AI !!</h1>
-  <p>Currently it only works with PDF !!</p>
   <form method="post" enctype="multipart/form-data" action="{% url 'combined_view' %}">
     {% csrf_token %}
     {{ form }}
-    <button class="button" type="submit">Submit</button>
+    <input type="button" value="Answer" class="button" onclick="displayQuestion()"/>
   </form>
-  
+  <div id="result"></div>
 </article>
-  
+<script>
+  function displayQuestion() {
+      var question = document.getElementsByName("question")[0].value;
+      var dummyAnswer =  "this is not a dummy answer anymore" ;
+      var resultHTML = "<h2>Question: " + question + "</h2>";
+      resultHTML += "<p>Answer:  Answer: {{ answer }}!</p> " + dummyAnswer + "!</p>";
+      document.getElementById("result").innerHTML = resultHTML;
+  }
+</script>
 
 </body>
 </html>

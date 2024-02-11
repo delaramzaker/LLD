@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import CombinedForm, UploadFileForm
+from .forms import CombinedForm, UploadFileForm, UploadFileForm
 from .llm import process_uploaded_file, answer_question
 
 def hello_world(request):
@@ -20,46 +20,42 @@ def PWS_world(request):
     return render(request, 'PWS_world.html')
 
 def upload_file(request):
+    print(1)
     if request.method == 'POST':
+        print(2)
         form = UploadFileForm(request.POST, request.FILES)
+        print(3)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
+            print(4)
+            qa = handle_uploaded_file(request.FILES['file'])
+            print(5)
+            request.session['qa'] = qa
+            print("qa is None:")
+            print(qa is None)
             return HttpResponse('File uploaded successfully!')
     else:
         form = UploadFileForm()
-    return render(request, 'upload_file.html', {'form': form})
+    return render(request, 'about.html', {'form': form})
 
-def handle_uploaded_file(file):
+def handle_uploaded_file(request):
+    file = request.FILES['file']
     file_path = os.path.join('uploads', file.name)
     with open(file_path, 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
-    if file.name.endswith('.doc'):
-        # Handle .doc file processing
-        process_doc_file(file_path)
-    elif file.name.endswith('.pdf'):
-        # Handle PDF file processing
-        process_pdf_file(file_path)
-    else:
-        # Handle other file types (e.g., text files)
-        process_uploaded_file(file_path)
-
-def process_doc_file(file_path):
-    # Logic to process .doc files
-    pass
-
-def process_pdf_file(file_path):
-    # Logic to process PDF files
-    pass
-
+    # Handle other file types (e.g., text files)
+    return process_uploaded_file(file_path)
+    
 def combined_view(request):
     if request.method == 'POST':
         form = CombinedForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            question = form.cleaned_data['question']
-            dummy_answer = answer_question(question)
-            return render(request, 'combined_result.html', {'question': question, 'dummy_answer': dummy_answer})
+            qa = handle_uploaded_file(request)
+            # question = form.cleaned_data['question']
+            question = request.POST.get('question', '')
+            answer = answer_question(qa, question)
+            return render(request, 'combined_form.html', {'question': question, 'answer': answer})
+    #changed from combined_results.html to combined_form.html
     else:
-        form = CombinedForm()
+        form = UploadFileForm()
     return render(request, 'combined_form.html', {'form': form})

@@ -1,6 +1,7 @@
 import os
 import openai
 import sys
+import datetime
 from langchain.llms import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -8,7 +9,15 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor 
 from langchain.vectorstores import Chroma 
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
+from langchain.document_loaders import PyPDFLoader
 
+
+
+llm_name = None
 
 def process_uploaded_file(file):
     sys.path.append('../..')
@@ -40,25 +49,7 @@ def process_uploaded_file(file):
         persist_directory=persist_directory
     ) 
 
-  
-
-def answer_question(question):
-
-    import os
-    import openai
-    import sys
-    import datetime
-    from dotenv import load_dotenv, find_dotenv
-    from langchain.vectorstores import Chroma
-    from langchain.embeddings.openai import OpenAIEmbeddings
-    from langchain.chat_models import ChatOpenAI
-    from langchain.chains import RetrievalQA
-
     sys.path.append('../..')
-
-
-    _ = load_dotenv(find_dotenv()) # read local .env file
-
     
     current_date = datetime.datetime.now().date()
     if current_date < datetime.date(2023, 9, 2):
@@ -70,16 +61,33 @@ def answer_question(question):
     persist_directory = 'chromadb-storage'
     embedding = OpenAIEmbeddings()
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
-    
-    docs = vectordb.similarity_search(question,k=3)
-    len(docs)
-    
-    llm = ChatOpenAI(model_name=llm_name, temperature=0)
-    qa_chain = RetrievalQA.from_chain_type(
-        llm,
-        retriever=vectordb.as_retriever()
+
+    memory = ConversationBufferMemory(
+        memory_key="chat_history",
+        return_messages=True
     )
-    result = qa_chain({"query": question})
-    return result["result"]
+    retriever=vectordb.as_retriever()
+    llm = ChatOpenAI(model_name=llm_name, temperature=0)
+    qa = ConversationalRetrievalChain.from_llm(
+        llm,
+        retriever=retriever,
+        memory=memory
+    )
+    return qa
 
 
+def answer_question(qa, question):
+    # docs = vectordb.similarity_search(question,k=3)
+    # len(docs)
+    
+    # qa_chain = RetrievalQA.from_chain_type(
+    #     llm,
+    #     retriever=vectordb.as_retriever()
+    # )
+    # result = qa_chain({"query": question})
+    # return result["result"]
+
+
+    question = "Is er salicylzuur nodig voor dit experiment?"
+    result = qa({"question": question})
+    result['answer']
