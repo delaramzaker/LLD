@@ -14,6 +14,11 @@ from langchain.chains import RetrievalQA
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.document_loaders import PyPDFLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
+from langchain.vectorstores import DocArrayInMemorySearch
+from langchain.document_loaders import TextLoader
+
 
 
 
@@ -21,7 +26,7 @@ llm_name = None
 
 
 def process_uploaded_file(file):
-    sys.path.append('../..')
+    
 
     _ = load_dotenv(find_dotenv()) # read local .env file
 
@@ -50,7 +55,7 @@ def process_uploaded_file(file):
         persist_directory=persist_directory
     ) 
 
-    sys.path.append('../..')
+    
     
     current_date = datetime.datetime.now().date()
     if current_date < datetime.date(2023, 9, 2):
@@ -62,6 +67,7 @@ def process_uploaded_file(file):
     persist_directory = 'chromadb-storage'
     embedding = OpenAIEmbeddings()
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
+
 
     memory = ConversationBufferMemory(
         memory_key="chat_history",
