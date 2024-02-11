@@ -1,8 +1,10 @@
 import os
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import CombinedForm, UploadFileForm, UploadFileForm
 from .llm import process_uploaded_file, answer_question
+from .globals import qa
+
 
 def hello_world(request):
     return HttpResponse("Hello, World!")
@@ -47,15 +49,22 @@ def handle_uploaded_file(request):
     return process_uploaded_file(file_path)
     
 def combined_view(request):
+    global qa
     if request.method == 'POST':
-        form = CombinedForm(request.POST, request.FILES)
+        form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             qa = handle_uploaded_file(request)
-            # question = form.cleaned_data['question']
-            question = request.POST.get('question', '')
-            answer = answer_question(qa, question)
-            return render(request, 'combined_form.html', {'question': question, 'answer': answer})
+            return redirect('question_answer')
+            # return render(request, 'qa.html')
     #changed from combined_results.html to combined_form.html
     else:
         form = UploadFileForm()
-    return render(request, 'combined_form.html', {'form': form})
+    return render(request, 'upload.html', {'form': form})
+
+def question_answer(request):
+    return render(request, "question_answer.html")
+
+def get_answer(request):
+    global qa
+    answer = answer_question(qa, request.GET.get('question'))
+    return HttpResponse(answer, content_type='text/plain')

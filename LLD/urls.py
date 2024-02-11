@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from LLDapp.views import hello_world, upload_file, answer_question, combined_view, PWS_world, news, about, contact
+from LLDapp.views import hello_world, upload_file, answer_question, combined_view, PWS_world, news, about, contact, question_answer, get_answer
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -30,6 +30,8 @@ urlpatterns = [
     path('news/', news, name='news'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
+    path('question_answer/', question_answer, name='question_answer'),
+    path('get_answer/', get_answer, name='get_answer'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

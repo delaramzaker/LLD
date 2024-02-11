@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Combined Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
+	
+    <style>
+
+      .text_field {
+        background-color: #f3b1ce;
+        height: 40px;
+        width: 50%;
+        margin-bottom:30px ; 
+        margin-top:30px ; 
+      }
+
+      .button {
+      background-color: #f3b1ce;
+      color: white;
+      font-family: "Single Day";
+      font-size: 24px;
+      text-decoration: none;
+      border: none;
+      display: inline-block;
+      border-radius: 15px;
+      cursor: pointer;
+      padding: 14px 24px;
+    }
+      body {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background-color: #fcd7d7;
+      }
+      
+      .active {
+      background-color: #f3b1ce;}
+      h1 {
+          font-size: 80px;
+      }
+      
+      /* stukje tekst */
+      article {
+          flex-grow: 1;
+          text-align: center;
+          color: white;
+          font-family:"Single Day";
+      }
+      
+      /* nav menu */
+      li {
+        float: left;
+        font-family: "Single Day";
+      }
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover {
+        background-color: #ecbad0;
+      }
+      
+      ul {
+        background-color: #fcd7d7;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-size: 20px;
+      }
+      /* end nav menu */
+      
+      
+      /* footer */
+      
+      /* streepje */
+      hr.dash {border-top: 2px dashed white;
+      }
+      
+      footer {
+          margin-top: auto;
+          font-family:"Single Day";
+          font-size: 14px;
+          text-align: center;
+          color: #c78ca0;
+      }
+          
+      /* end footer */
+
+        body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Make the body fill the viewport height */
+    margin: 0; /* Remove default margin */
+}
+
+#article {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Make the article fill the viewport height */
+    margin: 0; /* Remove default margin */
+}
+
+#result {
+    flex: 1; /* Make the result div fill the available space */
+    border: 1px solid #ccc; /* Add a border for clarity */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+
+#input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0; /* Add a background color for better visibility */
+    border-top: 1px solid #ccc; /* Add a border to separate from the result */
+    box-sizing: border-box; /* Include padding in the width */
+}      </style>
+
+</head>
+<body>
+  <header>
+		<nav>
+			<ul>
+			  <li><a href="/PWS/">Home</a></li>
+			  <li><a href='/news/'>News</a></li>
+			  <li><a href="/contact/">Contact</a></li>
+			  <li><a href="/about/">About</a></li>
+        <li style="float:right"><a class="active" href="/combined/">LLD</a></li>
+			
+			</ul>
+		</nav>
+	</header>
+    <article id="article">
+        <h1>Question answering AI !!</h1>
+        <div id="result"></div>
+    </article>
+    <div id="input-container">
+        <input type="text" id="question" name="question" style="flex: 1;" onkeydown="handleKeyPress(event)"/>
+        <input type="button" value="send" onclick="send_question()" style="margin-left: 10px;">
+    </div>
+<script>
+    function send_question() {
+        var inputElement = document.getElementById("question");
+        var textValue = inputElement.value;
+
+        var resultDiv = document.getElementById("result");
+
+        // Display question
+        var questionPara = document.createElement("p");
+        questionPara.textContent = "Question: " + textValue;
+        inputElement.value = "";
+        resultDiv.appendChild(questionPara);
+
+        // Display placeholder for answer
+        var answerPara = document.createElement("p");
+        answerPara.textContent = "Answer: ...";
+        resultDiv.appendChild(answerPara);
+
+        var inputContainer = document.getElementById("input-container");
+        answerPara.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        inputContainer.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open("GET", "/get_answer?question=" + encodeURIComponent(textValue), true);
+
+        // Set up a callback function to handle the response
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Request was successful
+                var responseText = xhr.responseText;
+                answerPara.textContent = "Answer: " + responseText;
+                answerPara.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+                inputContainer.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+            } else {
+                // Request failed
+                alert('Request failed with status: ' + xhr.status);
+            }
+        };
+
+        // Send the request
+        xhr.send();
+    }
+
+    function handleKeyPress(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Prevent the default behavior of the Enter key (form submission)
+        send_question(); // Trigger the send_question() function
+    }
+}
+</script>
+
+</body>
+</html>

@@ -88,6 +88,5 @@ def answer_question(qa, question):
     # return result["result"]
 
 
-    question = "Is er salicylzuur nodig voor dit experiment?"
     result = qa({"question": question})
-    result['answer']
+    return result['answer']

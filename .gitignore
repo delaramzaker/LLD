@@ -3,3 +3,5 @@ LLD/LLDapp/__pycache__
 env/**
 .DS_Store
 /chromadb-storage
+.idea
+uploads/**
