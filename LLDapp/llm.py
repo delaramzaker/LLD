@@ -24,9 +24,9 @@ from langchain.document_loaders import TextLoader
 
 llm_name = None
 
+import os
 
 def process_uploaded_file(file):
-    
 
     _ = load_dotenv(find_dotenv()) # read local .env file
 
@@ -44,15 +44,15 @@ def process_uploaded_file(file):
         chunk_overlap = 150
     )
     splits = text_splitter.split_documents(docs)
-    persist_directory = 'chromadb-storage'
+    # persist_directory = 'chromadb-storage'
     # !rm -rf ./docs/chroma  # remove old database files if any 
 
     embedding = OpenAIEmbeddings()
-
+    
     vectordb = Chroma.from_documents(
         documents=splits,
         embedding=embedding,
-        persist_directory=persist_directory
+        # persist_directory=persist_directory
     ) 
 
     
@@ -64,9 +64,9 @@ def process_uploaded_file(file):
         llm_name = "gpt-3.5-turbo"
 
     
-    persist_directory = 'chromadb-storage'
+    # persist_directory = 'chromadb-storage'
     embedding = OpenAIEmbeddings()
-    vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
+    # vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
 
 
     memory = ConversationBufferMemory(
