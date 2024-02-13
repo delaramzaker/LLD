@@ -106,21 +106,19 @@
 			  <li><a href="/PWS/">Home</a></li>
 			  <li><a href='/news/'>News</a></li>
 			  <li><a href="/contact/">Contact</a></li>
-			  <li><a href="/about/">Upload</a></li>
+			  <li><a href="/about/">About</a></li>
         <li style="float:right"><a class="active" href="/combined/">LLD</a></li>
 			
 			</ul>
 		</nav>
 	</header>
 <article id="article">
-  <h1>Question answering AI !!</h1>
-  <form method="post" enctype="multipart/form-data" action="{% url 'combined_view' %}">
-   
-    {{ form }}
-    <br>
-    <input type="button" value="Upload" class="button" />
-  </form>
-  <div id="result"></div>
+  <h1>ABOUT THIS PROJECT</h1>
+  <p>Simply put:</p>
+  <br>
+  <p>The file you upload gets chopped in chuncks. The chuncks get embedded and stored in a vectorstore.</p> <br>
+  <p>When you ask a question, the program looks for the chuncks which are most relevant to your question.</p><br>
+  <p>Your question and the relevent chuncks get sent to an *AI* where an answer is generated and sent back!</p><br>
 </article>
 
 
